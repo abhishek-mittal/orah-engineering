@@ -1,16 +1,27 @@
-import React from "react"
-import styled from "styled-components"
-import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Images } from "assets/images"
-import { Colors } from "shared/styles/colors"
+import React, { useContext } from "react"
 import { Person, PersonHelper } from "shared/models/person"
+import { RolllStateType } from "shared/models/roll"
+import { Colors } from "shared/styles/colors"
+import { BorderRadius, FontWeight, Spacing } from "shared/styles/styles"
 import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-switcher.component"
+import { appendStudentRoleState } from "staff-app/store/actions"
+import { StaffAppContext } from "staff-app/store/StaffAppContext"
+import styled from "styled-components"
 
 interface Props {
   isRollMode?: boolean
   student: Person
 }
 export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
+
+  const { dispatch, state: { rollStateIdMap } } = useContext(StaffAppContext);
+
+  const handleRollChange = async (newRollState: RolllStateType) => {
+    dispatch(appendStudentRoleState(student.id, newRollState))
+  }
+
+
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -19,7 +30,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher />
+          <RollStateSwitcher initialState={rollStateIdMap[student.id]} onStateChange={handleRollChange} />
         </S.Roll>
       )}
     </S.Container>
