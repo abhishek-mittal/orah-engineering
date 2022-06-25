@@ -20,7 +20,7 @@ export const MenuItem: React.FC<Props> = ({
 
 
 const S = {
-    Wrapper: styled.div<{ isActive: boolean }>`
+    Wrapper: styled.div<{ isActive?: boolean }>`
         width: 100%;
         background-color: ${({ isActive }) => (isActive ? "#bcbcbc" : "#fff")};
         color: #343f64;
