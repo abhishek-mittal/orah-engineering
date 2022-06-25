@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Tooltip } from "@material-ui/core"
 import Button from "@material-ui/core/ButtonBase"
 import React, { useContext, useEffect, useState } from "react"
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
@@ -20,6 +21,7 @@ import { clearFilterConfigs, clearStudentRoleState, setStudentProfileList, updat
 import { StaffAppContext } from "staff-app/store/StaffAppContext"
 import styled from "styled-components"
 import { DailyCarePresent } from "./daily-care.presets"
+
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -185,11 +187,17 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
     <S.ToolbarContainer>
       <div>{DailyCarePresent.toolbarDisplayNameMap[selectedMenuItem].displayName}
 
-        <S.Button data-sort-asc={isAsc} onClick={handleSort}>
-          ↓
-        </S.Button>
+        <Tooltip title={`sorted by ${isAsc ? 'asc' : 'desc'}`}>
+          <S.Button data-sort-asc={isAsc} onClick={handleSort}>
+            ↓
+          </S.Button>
+        </Tooltip>
         <Menu
-          value={selectedMenuItem} renderLabel={<S.Button>&#555;</S.Button>} useSwitch
+          value={selectedMenuItem} renderLabel={<S.Button>
+            <svg height={18} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </S.Button>} useSwitch
           onSelectionChange={(v) => setSelectedMenuItem(v)}
         >
           <MenuItem value={ToolBarSortByKey.FIRST_NAME} >Sort By First Name</MenuItem>
@@ -226,7 +234,7 @@ const S = {
       transform: rotate(180deg);
     }
     && {
-      padding: ${Spacing.u2};
+      margin-left: ${Spacing.u2};
       font-weight: ${FontWeight.strong};
       border-radius: ${BorderRadius.default};
     }
